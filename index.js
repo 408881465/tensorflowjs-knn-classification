@@ -149,6 +149,10 @@ const start = async () => {
         prediction: ${classes[result.label]}\n
         probability: ${result.confidences[result.label]}
       `;
+        console.log(result.label);
+        message = new Paho.MQTT.Message(result.label);
+        message.destinationName = "World";
+        client.send(message);
 
         // Dispose the tensor to release the memory.
         img.dispose();

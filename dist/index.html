@@ -1,0 +1,56 @@
+<html>
+<head>
+    <!-- Load the latest version of TensorFlow.js -->
+    <script src="https://unpkg.com/@tensorflow/tfjs"></script>
+    <script src="https://unpkg.com/@tensorflow-models/mobilenet"></script>
+    <script src="https://unpkg.com/@tensorflow-models/knn-classifier"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="console"></div>
+<!-- Add an image that we will use to test -->
+<!--<img id="img" crossorigin src="https://i.imgur.com/Fi4j15h.jpg" width="227" height="227"/>-->
+<p></p><video autoplay="" playsinline="" muted="" id="webcam" width="448" height="448"></video><p></p>
+<p><button id="class-a">Add A</button>
+    <button id="class-b">Add B</button>
+    <button id="class-c">Add C</button>
+    <button id="save_button">Save</button></p>
+
+<!--<button id="load_button">Load</button>-->
+<input id="load_button" type="file" accept=".json">
+<img id="output">
+<!-- Load index.js after the content of the page -->
+<script src="/tensorflowjs-knn-classification.e31bb0bc.js"></script>
+<script>// Create a client instance
+client = new Paho.MQTT.Client('www.sjaiedu.com', 8083, "clientId"); // set callback handlers
+
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived; // connect the client
+
+client.connect({
+  onSuccess: onConnect
+}); // called when the client connects
+
+function onConnect() {
+  // Once a connection has been made, make a subscription and send a message.
+  console.log("onConnect");
+  client.subscribe("World");
+  message = new Paho.MQTT.Message("Hello");
+  message.destinationName = "World";
+  client.send(message);
+} // called when the client loses its connection
+
+
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+    console.log("onConnectionLost:" + responseObject.errorMessage);
+  }
+} // called when a message arrives
+
+
+function onMessageArrived(message) {
+  console.log("onMessageArrived:" + message.payloadString);
+}</script>
+</body>
+</html>
