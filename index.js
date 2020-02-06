@@ -46,7 +46,10 @@ const start = async () => {
   };
   const createMobileNetModel = async () => {
     console.log('Loading Mobilenet Model');
-    return await mobilenet.load();
+    return await mobilenet.load({
+      version:1.0,
+      modelUrl:'./mobilenet/model.json'
+    });
   };
   const createWebcamInput = async () => {
     console.log('Loading Webcam Input');
@@ -151,7 +154,7 @@ const start = async () => {
       `;
         console.log(result.label);
         message = new Paho.MQTT.Message(result.label);
-        message.destinationName = "World";
+        message.destinationName = "/tm/led";
         client.send(message);
 
         // Dispose the tensor to release the memory.
